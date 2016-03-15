@@ -1,17 +1,13 @@
 package TextCorpus;
 
-import java.awt.AlphaComposite;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import Languages.LanguageSwedish;
 import Languages.Languages;
 
 public class Corpus {
@@ -20,6 +16,10 @@ public class Corpus {
 	private Map<String, WordPair> letterMap;
 	private String text;
 
+	/** 
+	 * @param file The file to read and analyze
+	 * @param lan The language to use.
+	 */
 	public Corpus(String file, Languages lan){
 		this.lan = lan;
 		this.letterMap = lan.getLetterMap();
@@ -29,6 +29,15 @@ public class Corpus {
 			e.printStackTrace();
 		}
 		countLetterFrequency(text);
+	}
+	
+	/** 
+	 * If no file is going to be used.
+	 * @param lan The language to use.
+	 */
+	public Corpus(Languages lan){
+		this.lan = lan;
+		this.letterMap = lan.getLetterMap();
 	}
 	
 	public void readTextFile(String file) throws IOException{
@@ -67,7 +76,6 @@ public class Corpus {
 	public void countLetterFrequency(String text){
 		for(char c : text.toCharArray()){
 			String s = String.valueOf(c).toLowerCase();
-			if(letterMap.isEmpty())System.out.println("sdds");
 			if(letterMap.containsKey(s)){	//Have already set all the keys
 				letterMap.get(s).incrementFreq();
 				nrOfLetters++;	//Only interested in words

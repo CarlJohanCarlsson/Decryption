@@ -41,9 +41,11 @@ public abstract class Languages{
 	 */
 	protected void generateLetterMap(){
 		letterMap = new HashMap<String,WordPair>();
+		int index = 0;
 		for(char c : alphabet.toCharArray()){
 			String s = String.valueOf(c);
-			letterMap.put(s, new WordPair(s, 0));
+			letterMap.put(s, new WordPair(s, 0, index));
+			index++;
 		}
 	}
 	

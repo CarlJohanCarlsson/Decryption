@@ -10,26 +10,25 @@ public class CeasearDec {
 	/**
 	 * Ceasar encryption, replacing every word in the text with the letter Nth jumps forward, F(N)=A+N, B+N,C+N so if N=3 -> A->D, B->E, C->F...
 	 * This means that the text is easily reversed aswell just by iterating N
-	 * @param text	The text which will be modified
-	 * @param chrjmp	Number of steps (N= chrjmp)
+	 * @param txt2Decrypt	The text which will be decrypted
+	 * @param lan	Provides the alphabet to shift upon
+	 * @param chrjmp	Number of steps to shift the text (N= chrjmp)
 	 * @return	Returns modified text
 	 */
 	public String ceasarDecrypt(String txt2Decrypt, Languages lan, int chrjmp){
 		char[] charTxt = txt2Decrypt.toLowerCase().toCharArray();
 		char[] charAlphabet = lan.getAlphabet().toCharArray();
-		/*	Have to iterate through the alphabet and can not use ASCII lookup, as it will only work for english.*/
+		Map<String, WordPair> letterMap = lan.getLetterMap();
 		if(chrjmp>charAlphabet.length)chrjmp-=charAlphabet.length;
 		if(chrjmp*-1>charAlphabet.length)chrjmp+=charAlphabet.length;
 		for(int i = 0; i < charTxt.length;i++){
-			for(int j = 0;j<charAlphabet.length;j++){
-				if(charTxt[i] == charAlphabet[j]){
-					int tmp = chrjmp+j;
+				String s = String.valueOf(charTxt[i]);
+				if(letterMap.containsKey(s)){
+					int tmp = chrjmp+letterMap.get(s).getIndex();
 					tmp += (tmp<0?charAlphabet.length:0);	//Handling a negative modulo
 					tmp = tmp%charAlphabet.length;
 					charTxt[i] = charAlphabet[tmp];
-					break;
 				}
-			}
 		}
 		return new String(charTxt);
 	}
@@ -37,12 +36,13 @@ public class CeasearDec {
 	/**
 	 * Ceasar encryption, replacing every word in the text with the letter Nth jumps forward, F(N)=A+N, B+N,C+N so if N=3 -> A->D, B->E, C->F...
 	 * This means that the text is easily reversed aswell just by iterating N
-	 * This method can only be used for english letters.
-	 * @param text	The text which will be modified
-	 * @param chrjmp	Number of steps (N= chrjmp)
+	 * This method can only be used for english letters, because of using ASCII shifts.
+	 * @param txt2Decrypt	The text which will be decrypted
+	 * @param lan	Provides the alphabet to shift upon
+	 * @param chrjmp	Number of steps to shift the text(N= chrjmp)
 	 * @return	Returns modified text
 	 */
-	public String ceasarDecrypt(String text2Decrypt, LanguageEnglish lan, int chrjmp){
+	public String ceasarDecrypt2(String text2Decrypt, LanguageEnglish lan, int chrjmp){
 		if(chrjmp>26)chrjmp-=26;
 		if(chrjmp*-1>26)chrjmp+=26;
 		char[] charArray = text2Decrypt.toCharArray();
@@ -63,5 +63,4 @@ public class CeasearDec {
 		}
 		return new String(charArray);
 	}
-
 }
